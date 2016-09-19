@@ -170,11 +170,19 @@ static void ClearAgentConfiguration()
 // global flag to ensure initialization is done once
 bool g_bInit = false;
 
+/* Function called to indicate the initialisation stage to GDB */
+extern "C" {
+    void __attribute__((optimize("O0"))) TriggerInitHSA(void)
+    {
+	return;
+    }
+}
 
 static void InitHsaAgent()
 {
     if (!g_bInit)
     {
+	TriggerInitHSA();
 
         AGENT_LOG("===== HSADebugAgent activated =====");
         CreateCommunicationFifos();
